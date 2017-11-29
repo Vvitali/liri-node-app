@@ -17,7 +17,10 @@
   },
   "homepage": "https://github.com/Vvitali/liri-node-app#readme",
   "dependencies": {
+    "node-spotify-api": "^1.0.7",
     "request": "^2.83.0",
+    "request-promise": "^4.2.2",
+    "spotify": "^0.3.0",
     "twitter": "^1.7.1"
   }
 }
