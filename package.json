@@ -1,0 +1,23 @@
+{
+  "name": "liri-node-app",
+  "version": "1.0.0",
+  "description": "A small text analog of SIRI made with Node.js",
+  "main": "keys.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Vvitali/liri-node-app.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Vvitali/liri-node-app/issues"
+  },
+  "homepage": "https://github.com/Vvitali/liri-node-app#readme",
+  "dependencies": {
+    "request": "^2.83.0",
+    "twitter": "^1.7.1"
+  }
+}
