@@ -35,8 +35,11 @@ switch(process.argv[2]){
 			console.log(data.tracks.items[0].artists[i].name)
 		}
 		console.log("The song's name: "+data.tracks.items[0].name);
-		// A preview link of the song from Spotify
-		// The album that the song is from
+
+		console.log("Preview link: "+data.tracks.items[0].preview_url);
+		
+		console.log("The album: "+data.tracks.items[0].album.name);
+
 	});
 
 	console.log(process.argv[2]);
