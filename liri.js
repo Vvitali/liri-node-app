@@ -4,6 +4,7 @@ DEBUG && console.log("Liri: start!");
 var twitterKeys = require("./keys.js")
 var Twitter = require('twitter');
 var client = Twitter(twitterKeys);
+var request = require('request');
 
 var Spotify = require('node-spotify-api');
 
@@ -22,10 +23,9 @@ switch(process.argv[2]){
 		for (var i in tweets){
 			console.log("▼▼ -- ▼▼")
 			console.log("Date: "+tweets[i].created_at)
-			//console.log("Message: "+ tweets[i].text);
+			console.log("Message: "+ tweets[i].text);
 		}
 	});
-	console.log(process.argv[2]);
 	break;
 	case 'spotify-this-song':
 	spotify.search({ type: 'track', query: process.argv[3], limit: 3 }, function(error, data) {
@@ -39,13 +39,15 @@ switch(process.argv[2]){
 		console.log("Preview link: "+data.tracks.items[0].preview_url);
 		
 		console.log("The album: "+data.tracks.items[0].album.name);
-
 	});
-
-	console.log(process.argv[2]);
 	break;
 	case "movie-this":	
-	console.log(process.argv[2]);
+	console.log(process.argv[3]);
+	request('http://www.omdbapi.com/?apikey=b5d73fa9&t='+process.argv[3], function (error, response, body) {
+	console.log('error:', error); // Print the error if one occurred
+	console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+	console.log('body:', body); // Print the HTML for the Google homepage.
+});
 	break;
 	case "do-what-it-says":
 	console.log(process.argv[2]);
