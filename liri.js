@@ -42,18 +42,36 @@ switch(process.argv[2]){
 	});
 	break;
 	case "movie-this":	
-	console.log(process.argv[3]);
+	DEBUG && console.log(process.argv[3])
 	request('http://www.omdbapi.com/?apikey=b5d73fa9&t='+process.argv[3], function (error, response, body) {
-	console.log('error:', error); // Print the error if one occurred
-	console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-	console.log('body:', body); // Print the HTML for the Google homepage.
-});
-	break;
-	case "do-what-it-says":
-	console.log(process.argv[2]);
-	break;
-	default:
-	break;
+		body = JSON.parse(body);
+		error && console.log('error:', error);
+		console.log("Title: "+body.Title);
+		console.log("Year: "+body.Year)
+		console.log("Rating: "+body.Rated);
+		console.log("Rotten Tomatoes Rating: "+body.Ratings[2].Value);
+		console.log("Country: "+body.Country);
+		console.log("Language: "+body.Language);
+		console.log("Plot: "+body.Plot);
+		console.log("Actors: "+body.Actors);
+	});
+
+
+// * Title of the movie.
+//    * Year the movie came out.
+//    * IMDB Rating of the movie.
+//    * Rotten Tomatoes Rating of the movie.
+//    * Country where the movie was produced.
+//    * Language of the movie.
+//    * Plot of the movie.
+//    * Actors in the movie.
+
+break;
+case "do-what-it-says":
+DEBUG && console.log(process.argv[2]);
+break;
+default:
+break;
 }
 
 
