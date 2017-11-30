@@ -15,13 +15,17 @@ console.log = function(d) { //
 	log_stdout.write(util.format(d) + '\n');
 };
 
-
 var Spotify = require('node-spotify-api');
 
 var spotify = new Spotify({
 	id: "d028e5930377471885981d046250476a",
 	secret: "8142e3cf6e9a45bfbfed6e55944fb638"
 });
+
+var argument = '';
+for (var i =3; i<process.argv.length; i++){
+	argument+=process.argv[i]+"+";
+}
 
 switch(process.argv[2]){
 	case 'my-tweets':
@@ -52,23 +56,24 @@ switch(process.argv[2]){
 	});
 	break;
 	case "movie-this":	
-	DEBUG && console.log(process.argv[3])
+	DEBUG && console.log(argument)
 
 	if(!(!!process.argv[3])){
 		console.log("if you haven't watched 'Mr. Nobody,' then you should: http://www.imdb.com/title/tt0485947/")
 		process.argv[3] = "Mr.nobody";
 	}
-	request('http://www.omdbapi.com/?apikey=b5d73fa9&t='+process.argv[3], function (error, response, body) {
+	//somemovies do not contains certain fields - so I have to use && statment to track it
+	request('http://www.omdbapi.com/?apikey=b5d73fa9&t='+argument, function (error, response, body) {
 		body = JSON.parse(body);
 		DEBUG && console.log(error)
-		if(!!error){
+		if(!!error || !body.Title){
 			console.log('error:', error);
 			return 0;
 		}
 		console.log("Title: "+body.Title);
 		console.log("Year: "+body.Year)
 		console.log("Rating: "+body.Rated);
-		console.log("Rotten Tomatoes Rating: "+body.Ratings[2].Value);
+		body.Ratings[2] && console.log("Rotten Tomatoes Rating: "+body.Ratings[2].Value);
 		console.log("Country: "+body.Country);
 		console.log("Language: "+body.Language);
 		console.log("Plot: "+body.Plot);
