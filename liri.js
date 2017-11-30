@@ -9,7 +9,7 @@ var fs = require('fs');
 var util = require('util');
 var log_file = fs.createWriteStream(__dirname + '/log.txt', {flags : 'a'});
 var log_stdout = process.stdout;
-
+//I redefined standart console.log function to make it log all output to the stdout, and add it to log.txt file
 console.log = function(d) { //
 	log_file.write(util.format(d) + '\n');
 	log_stdout.write(util.format(d) + '\n');
@@ -52,7 +52,7 @@ var movieThis = ()=>{
 		body = JSON.parse(body);
 		DEBUG && console.log(error)
 		if(!!error || !body.Title){
-			console.log('error:', error);
+			console.log('Try one more time (maybe you need to check movie name spelling):', error);
 			return 0;
 		}
 		console.log("Title: "+body.Title);
@@ -65,7 +65,6 @@ var movieThis = ()=>{
 		console.log("Actors: "+body.Actors);
 	});
 }
-
 var spotifyThisSong = ()=>{
 	spotify.search({ type: 'track', query: argument, limit: 3 }, function(error, data) {
 		error && console.log(error);
@@ -108,33 +107,22 @@ var doWhatItSays = ()=>{
 			case "spotify-this-song":
 			spotifyThisSong();
 			break;
-			//you should be very careful with typing this function to your random.txt file - it will cause infinity recursion
-			case "doWhatItSays":
-			doWhatItSays();
-			break;
+			//you should be very careful with typing this function to your random.text file - it will cause infinite recursion, so I will turn off this case.
+			// case "doWhatItSays":
+			// doWhatItSays();
+			// break;
 			default:
 			break;
 		}
 	});
 }
-
+console.log(process.argv[2])
 switch(process.argv[2]){
 	case 'my-tweets':
 	myTweets();
 	break;
 	case 'spotify-this-song':
-	spotify.search({ type: 'track', query: process.argv[3], limit: 3 }, function(error, data) {
-		error && console.log(error);
-		console.log("Artists:");
-		for (var i in data.tracks.items[0].artists){
-			console.log(data.tracks.items[0].artists[i].name)
-		}
-		console.log("The song's name: "+data.tracks.items[0].name);
-
-		console.log("Preview link: "+data.tracks.items[0].preview_url);
-		
-		console.log("The album: "+data.tracks.items[0].album.name);
-	});
+	spotifyThisSong();
 	break;
 	case "movie-this":	
 	movieThis();
@@ -145,8 +133,3 @@ switch(process.argv[2]){
 	default:
 	break;
 }
-
-
-// request('http://www.google.com', function (error, response, body){
-
-// });
