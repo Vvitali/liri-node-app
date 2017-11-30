@@ -1,4 +1,4 @@
-var DEBUG = true;
+var DEBUG = false;
 
 DEBUG && console.log("Liri: start!");
 var twitterKeys = require("./keys.js")
@@ -81,10 +81,10 @@ var spotifyThisSong = ()=>{
 	});
 }
 var doWhatItSays = ()=>{
-	DEBUG && console.log(process.argv[2]);
+	DEBUG && console.log("Argument: "+process.argv[2]);
 	fs.readFile('random.txt', "utf8", (error, data) => {
 		if (error) {
-			console.log('error:', error);
+			console.log('DWIS error:', error);
 			return 0;
 		}
 		data = data.split(" ");
