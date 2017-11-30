@@ -27,8 +27,7 @@ for (var i =3; i<process.argv.length; i++){
 	argument+=process.argv[i]+"+";
 }
 
-switch(process.argv[2]){
-	case 'my-tweets':
+var myTweets = ()=>{
 	var params = {screen_name: 'Vitali_LoGoS4', 
 	count:20};
 	client.get('statuses/user_timeline', params, function(error, tweets, response) {
@@ -40,25 +39,11 @@ switch(process.argv[2]){
 			console.log("Message: "+ tweets[i].text);
 		}
 	});
-	break;
-	case 'spotify-this-song':
-	spotify.search({ type: 'track', query: process.argv[3], limit: 3 }, function(error, data) {
-		error && console.log(error);
-		console.log("Artists:");
-		for (var i in data.tracks.items[0].artists){
-			console.log(data.tracks.items[0].artists[i].name)
-		}
-		console.log("The song's name: "+data.tracks.items[0].name);
-
-		console.log("Preview link: "+data.tracks.items[0].preview_url);
-		
-		console.log("The album: "+data.tracks.items[0].album.name);
-	});
-	break;
-	case "movie-this":	
+}
+var movieThis = ()=>{
 	DEBUG && console.log(argument)
 
-	if(!(!!process.argv[3])){
+	if(!(!!argument)){
 		console.log("if you haven't watched 'Mr. Nobody,' then you should: http://www.imdb.com/title/tt0485947/")
 		process.argv[3] = "Mr.nobody";
 	}
@@ -79,17 +64,83 @@ switch(process.argv[2]){
 		console.log("Plot: "+body.Plot);
 		console.log("Actors: "+body.Actors);
 	});
-	break;
-	case "do-what-it-says":
+}
+
+var spotifyThisSong = ()=>{
+	spotify.search({ type: 'track', query: argument, limit: 3 }, function(error, data) {
+		error && console.log(error);
+		console.log("Artists:");
+		for (var i in data.tracks.items[0].artists){
+			console.log(data.tracks.items[0].artists[i].name)
+		}
+		console.log("The song's name: "+data.tracks.items[0].name);
+
+		console.log("Preview link: "+data.tracks.items[0].preview_url);
+		
+		console.log("The album: "+data.tracks.items[0].album.name);
+	});
+}
+var doWhatItSays = ()=>{
 	DEBUG && console.log(process.argv[2]);
 	fs.readFile('random.txt', "utf8", (error, data) => {
 		if (error) {
 			console.log('error:', error);
 			return 0;
 		}
-		console.log(data);
-	});
+		data = data.split(" ");
+		var operation = data[0];
 
+		DEBUG && console.log("Case:"+operation);
+		DEBUG && console.log("len:"+data.length);
+
+		argument = '';
+		for (var i =1; i<data.length; i++){
+			argument+=data[i]+"+";
+		}
+		DEBUG && console.log("Arguments from file: "+argument);
+		switch(operation){
+			case"movie-this":
+			movieThis();
+			break;
+			case "my-tweets":
+			myTweets();
+			break;
+			case "spotify-this-song":
+			spotifyThisSong();
+			break;
+			//you should be very careful with typing this function to your random.txt file - it will cause infinity recursion
+			case "doWhatItSays":
+			doWhatItSays();
+			break;
+			default:
+			break;
+		}
+	});
+}
+
+switch(process.argv[2]){
+	case 'my-tweets':
+	myTweets();
+	break;
+	case 'spotify-this-song':
+	spotify.search({ type: 'track', query: process.argv[3], limit: 3 }, function(error, data) {
+		error && console.log(error);
+		console.log("Artists:");
+		for (var i in data.tracks.items[0].artists){
+			console.log(data.tracks.items[0].artists[i].name)
+		}
+		console.log("The song's name: "+data.tracks.items[0].name);
+
+		console.log("Preview link: "+data.tracks.items[0].preview_url);
+		
+		console.log("The album: "+data.tracks.items[0].album.name);
+	});
+	break;
+	case "movie-this":	
+	movieThis();
+	break;
+	case "do-what-it-says":
+	doWhatItSays();
 	break;
 	default:
 	break;
