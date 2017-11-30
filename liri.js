@@ -1,4 +1,4 @@
-var DEBUG = false;
+var DEBUG = true;
 
 DEBUG && console.log("Liri: start!");
 var twitterKeys = require("./keys.js")
@@ -43,9 +43,18 @@ switch(process.argv[2]){
 	break;
 	case "movie-this":	
 	DEBUG && console.log(process.argv[3])
+
+	if(!(!!process.argv[3])){
+		console.log("if you haven't watched 'Mr. Nobody,' then you should: http://www.imdb.com/title/tt0485947/")
+		process.argv[3] = "Mr.nobody";
+	}
 	request('http://www.omdbapi.com/?apikey=b5d73fa9&t='+process.argv[3], function (error, response, body) {
 		body = JSON.parse(body);
-		error && console.log('error:', error);
+		DEBUG && console.log(error)
+		if(!!error){
+			console.log('error:', error);
+			return 0;
+		}
 		console.log("Title: "+body.Title);
 		console.log("Year: "+body.Year)
 		console.log("Rating: "+body.Rated);
@@ -55,23 +64,12 @@ switch(process.argv[2]){
 		console.log("Plot: "+body.Plot);
 		console.log("Actors: "+body.Actors);
 	});
-
-
-// * Title of the movie.
-//    * Year the movie came out.
-//    * IMDB Rating of the movie.
-//    * Rotten Tomatoes Rating of the movie.
-//    * Country where the movie was produced.
-//    * Language of the movie.
-//    * Plot of the movie.
-//    * Actors in the movie.
-
-break;
-case "do-what-it-says":
-DEBUG && console.log(process.argv[2]);
-break;
-default:
-break;
+	break;
+	case "do-what-it-says":
+	DEBUG && console.log(process.argv[2]);
+	break;
+	default:
+	break;
 }
 
 
