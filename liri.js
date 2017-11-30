@@ -6,9 +6,8 @@ var Twitter = require('twitter');
 var client = Twitter(twitterKeys);
 var request = require('request');
 var fs = require('fs');
-
 var util = require('util');
-var log_file = fs.createWriteStream(__dirname + '/log.txt', {flags : 'w'});
+var log_file = fs.createWriteStream(__dirname + '/log.txt', {flags : 'a'});
 var log_stdout = process.stdout;
 
 console.log = function(d) { //
