@@ -5,6 +5,17 @@ var twitterKeys = require("./keys.js")
 var Twitter = require('twitter');
 var client = Twitter(twitterKeys);
 var request = require('request');
+var fs = require('fs');
+
+var util = require('util');
+var log_file = fs.createWriteStream(__dirname + '/log.txt', {flags : 'w'});
+var log_stdout = process.stdout;
+
+console.log = function(d) { //
+	log_file.write(util.format(d) + '\n');
+	log_stdout.write(util.format(d) + '\n');
+};
+
 
 var Spotify = require('node-spotify-api');
 
@@ -67,6 +78,14 @@ switch(process.argv[2]){
 	break;
 	case "do-what-it-says":
 	DEBUG && console.log(process.argv[2]);
+	fs.readFile('random.txt', "utf8", (error, data) => {
+		if (error) {
+			console.log('error:', error);
+			return 0;
+		}
+		console.log(data);
+	});
+
 	break;
 	default:
 	break;
